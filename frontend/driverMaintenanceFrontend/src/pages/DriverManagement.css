@@ -1,0 +1,366 @@
+/* ============================================================
+   DriverManagement.css - Premium Modern Aesthetic
+   ============================================================ */
+
+/* ── Core Layout ── */
+.adm-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f7fb;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1e293b;
+}
+
+.adm-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* ── Header ── */
+.adm-header {
+  background: #ffffff;
+  padding: 24px 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.02);
+}
+
+.adm-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  margin: 0;
+}
+
+.adm-user {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.adm-bell {
+  font-size: 20px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.adm-bell:hover { color: #3b82f6; }
+
+.adm-avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* ── Main Content Grid ── */
+.adm-content {
+  padding: 36px 44px;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .adm-content { grid-template-columns: 1fr; }
+}
+
+.adm-left {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.adm-right {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ── Stats Cards ── */
+.adm-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.adm-stat-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.03), 0 4px 8px -2px rgba(15, 23, 42, 0.02);
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.adm-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.06), 0 6px 12px -2px rgba(15, 23, 42, 0.04);
+}
+
+.adm-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 4px; height: 100%;
+  background: #3b82f6;
+  border-radius: 4px 0 0 4px;
+}
+
+.adm-stat-card:nth-child(2)::before { background: #10b981; }
+.adm-stat-card:nth-child(3)::before { background: #f59e0b; }
+.adm-stat-card:nth-child(4)::before { background: #8b5cf6; }
+
+.adm-stat-title {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.adm-stat-val {
+  font-size: 34px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.adm-stat-icon {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+/* ── Table Cards ── */
+.adm-table-card {
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.adm-table-header {
+  padding: 24px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  background: #f8fafc;
+}
+
+.adm-table-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.adm-btn, .adm-filter select, .adm-search-wrap input {
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s;
+  outline: none;
+}
+
+/* ── Tables ── */
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.adm-table th {
+  text-align: left;
+  padding: 16px 28px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  border-bottom: 2px solid #f1f5f9;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: #ffffff;
+}
+
+.adm-table td {
+  padding: 20px 28px;
+  font-size: 14px;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.adm-table tbody tr {
+  transition: background 0.2s;
+}
+
+.adm-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* ── Badges ── */
+.adm-badge {
+  padding: 6px 12px;
+  border-radius: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  letter-spacing: 0.02em;
+}
+
+.adm-badge--active, .adm-badge--completed, .adm-badge--approved { background: #dcfce7; color: #166534; }
+.adm-badge--onleave, .adm-badge--enroute, .adm-badge--pending { background: #fef9c3; color: #854d0e; }
+.adm-badge--suspended, .adm-badge--cancelled, .adm-badge--rejected { background: #fee2e2; color: #991b1b; }
+.adm-badge--scheduled { background: #e0f2fe; color: #0369a1; }
+
+/* Actions */
+.adm-action-link {
+  color: #64748b;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.adm-action-link:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.adm-action-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+}
+
+.adm-btn-approve {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+
+.adm-btn-approve:hover { background: #059669; }
+
+.adm-btn-reject {
+  background: #ef4444;
+  color: white;
+}
+.adm-btn-reject:hover { background: #dc2626; }
+
+/* ── Side Forms ── */
+.adm-form-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.adm-form-card h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+}
+
+.adm-form-sub {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0 0 28px 0;
+}
+
+.adm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.adm-form-group { display: flex; flex-direction: column; gap: 8px; }
+
+.adm-form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.adm-form-group input, .adm-form-group select {
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #0f172a;
+  background: #f8fafc;
+  transition: all 0.2s;
+  outline: none;
+  font-family: inherit;
+}
+
+.adm-form-group input:focus, .adm-form-group select:focus {
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.adm-btn {
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.adm-btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+}
+
+.adm-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+}

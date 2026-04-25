@@ -1,0 +1,129 @@
+.assignment-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #3498db;
+}
+
+.assignment-section {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.assignment-section:last-child {
+  margin-bottom: 0;
+}
+
+.assignment-section h4 {
+  margin: 0 0 12px 0;
+  color: #2c3e50;
+  font-size: 1.1em;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 8px;
+}
+
+.driver-section {
+  border-left: 4px solid #3498db;
+}
+
+.bus-section {
+  border-left: 4px solid #e74c3c;
+}
+
+.route-section {
+  border-left: 4px solid #f39c12;
+}
+
+.empty-section {
+  border-left: 4px solid #95a5a6;
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.assignment-section p {
+  margin: 8px 0;
+  color: #34495e;
+  font-size: 0.95em;
+}
+
+.assignment-section strong {
+  color: #2c3e50;
+  font-weight: 600;
+  min-width: 140px;
+  display: inline-block;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.status-badge.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.on-duty {
+  background-color: #cfe2ff;
+  color: #084298;
+}
+
+.status-badge.off-duty {
+  background-color: #fff3cd;
+  color: #664d03;
+}
+
+.status-badge.maintenance {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
+.status-badge.suspended {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.Certified {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.Pending {
+  background-color: #fff3cd;
+  color: #664d03;
+}
+
+.status-badge.Cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+@media (max-width: 768px) {
+  .assignment-card {
+    padding: 15px;
+  }
+
+  .assignment-section {
+    padding: 12px;
+  }
+
+  .assignment-section strong {
+    display: block;
+    margin-bottom: 4px;
+  }
+}

@@ -1,0 +1,1077 @@
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FaArrowRight, FaClock, FaMapMarkerAlt, FaCalendarAlt, FaSearch, FaFilter, FaUsers, FaStar, FaWifi, FaTv } from 'react-icons/fa';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import SearchBox from '../components/SearchBox';
+
+// Sri Lanka coordinates for major cities
+const coordinates = {
+  'Colombo': [6.9271, 79.8612],
+  'Kandy': [7.2906, 80.6337],
+  'Galle': [6.0535, 80.2210],
+  'Jaffna': [9.6615, 80.0255],
+  'Anuradhapura': [8.3114, 80.4037],
+  'Trincomalee': [8.5874, 81.2152],
+  'Matara': [5.9549, 80.5550],
+  'Negombo': [7.2084, 79.8344],
+  'Ratnapura': [6.7055, 80.3847],
+  'Batticaloa': [7.7102, 81.7046],
+  'Kurunegala': [7.4818, 80.3647],
+  'Puttalam': [8.0329, 79.8280],
+  'Chilaw': [7.5806, 79.7895],
+  'Vavuniya': [8.7564, 80.4966],
+  'Mannar': [8.9775, 79.9047],
+  'Polonnaruwa': [7.9403, 81.0188],
+  'Ampara': [7.2954, 81.6790],
+  'Badulla': [6.9934, 81.0550],
+  'Monaragala': [6.8707, 81.3496],
+  'Hambantota': [6.1244, 81.1185],
+  'Kegalle': [7.2513, 80.3464],
+  'Rajagiriya': [6.9023, 79.8895],
+  'SLIIT': [6.9214, 79.9654],
+  'Borella': [6.9334, 79.8658],
+  'Katunayake': [7.1658, 79.8788],
+  'Gampaha': [7.0873, 79.9985],
+  'Koswatta': [6.9056, 79.9625],
+  'JaEla': [7.0589, 79.8645],
+  'Panadura': [6.7148, 79.9027],
+  'Pannipitiya': [6.8523, 79.9654]
+};
+
+// Provided JSON data with available seats
+const busData = [
+    {
+        "_id": "6992ceb675a77b87eb2066fa",
+        "busImageUrl": "https://busesandvans.tatamotors.com/assets/buses/files/2025-02/STARBUS%20SKL%2034%2BA%2BD_1.jpg?VersionId=GL0g.Mn7x3PvKBjrsMmNyytdgV7GmcML",
+        "busId": "BUS001",
+        "routeName": "Rajagiriya -SLIIT",
+        "busType": "AC",
+        "status": "Certified",
+        "departureTime": "06:28",
+        "arrivalTime": "07:30",
+        "departureLocation": "Rajagiriya",
+        "arrivalLocation": "SLIIT",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "createdAt": "2026-02-16T08:00:54.319Z",
+        "updatedAt": "2026-02-25T08:13:56.773Z",
+        "__v": 0,
+        "price": 1350,
+        "availableSeats": 38
+    },
+    {
+        "_id": "6992d25e75a77b87eb2066ff",
+        "busImageUrl": "https://media.istockphoto.com/id/1189925691/photo/setra-s519hd.jpg?s=2048x2048&w=is&k=20&c=jeg-3m9IITiRGAcpLMCikOaGF14oS178F9W_oQqN5n8=",
+        "busId": "BUS002",
+        "routeName": "Borella- SLIIT",
+        "busType": "Normal",
+        "status": "Certified",
+        "departureTime": "06:20",
+        "arrivalTime": "07:45",
+        "departureLocation": "Borella",
+        "arrivalLocation": "SLIIT",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "createdAt": "2026-02-16T08:16:30.907Z",
+        "updatedAt": "2026-02-25T08:26:13.878Z",
+        "__v": 0,
+        "price": 1400,
+        "availableSeats": 42
+    },
+    {
+        "_id": "6992d3ba75a77b87eb206704",
+        "busImageUrl": "https://assets.volvo.com/is/image/VolvoInformationTechnologyAB/1860x1050-9400-Intercity-coach-BS4-2020-1?wid=1024",
+        "busId": "BUS003",
+        "routeName": "Katunayake-SLIIT",
+        "busType": "Luxury",
+        "status": "Certified",
+        "departureTime": "06:10",
+        "arrivalTime": "07:33",
+        "departureLocation": "Katunayake",
+        "arrivalLocation": "SLIIT",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "createdAt": "2026-02-16T08:22:18.886Z",
+        "updatedAt": "2026-02-25T08:14:34.900Z",
+        "__v": 0,
+        "price": 1500,
+        "availableSeats": 35
+    },
+    {
+        "_id": "6992d78f75a77b87eb206709",
+        "busImageUrl": "https://www.srilankantours.org/uploads/8/4/9/7/8497630/1814891_orig.jpg",
+        "busId": "BUS004",
+        "routeName": "Gampaha-SLIIT",
+        "busType": "Normal",
+        "status": "Certified",
+        "departureTime": "06:15",
+        "arrivalTime": "07:40",
+        "departureLocation": "Gampaha",
+        "arrivalLocation": "SLIIT",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "createdAt": "2026-02-16T08:38:39.491Z",
+        "updatedAt": "2026-02-25T08:13:34.772Z",
+        "__v": 0,
+        "price": 1700,
+        "availableSeats": 28
+    },
+    {
+        "_id": "6992d87a75a77b87eb20670e",
+        "busImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0Lyx-0AqgthFnwkbXR74S5xuC9qM_CRcHyQ&s",
+        "busId": "BUS005",
+        "routeName": "Koswatta-SLIIT",
+        "busType": "Non-AC",
+        "status": "Certified",
+        "departureTime": "06:21",
+        "arrivalTime": "07:37",
+        "departureLocation": "Koswatta",
+        "arrivalLocation": "SLIIT",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "createdAt": "2026-02-16T08:42:34.426Z",
+        "updatedAt": "2026-02-25T08:25:49.095Z",
+        "__v": 0,
+        "price": 1450,
+        "availableSeats": 45
+    },
+    {
+        "_id": "6992e3dec25f789a49547d47",
+        "busImageUrl": "https://5.imimg.com/data5/SELLER/Default/2025/2/487615959/KI/JD/ZX/29763022/tata-starbus-prime-51-a-d-lp910-52g-500x500.jpg",
+        "busId": "BUS006",
+        "routeName": "SLIIT- Rajagiriya",
+        "busType": "AC",
+        "status": "Certified",
+        "departureTime": "17:31",
+        "arrivalTime": "19:15",
+        "departureLocation": "SLIIT",
+        "arrivalLocation": "Rajagiriya",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "createdAt": "2026-02-16T09:31:10.181Z",
+        "updatedAt": "2026-02-25T08:56:51.587Z",
+        "__v": 0,
+        "price": 1350,
+        "availableSeats": 40
+    },
+    {
+        "_id": "69969553ff6ec2efd61cc64b",
+        "busImageUrl": "https://assets.volvo.com/is/image/VolvoInformationTechnologyAB/BS%20VI%20Bus%20Single%20Axcel_Single%20Bus?wid=1024",
+        "busId": "BUS007",
+        "routeName": "JaEla - SLIIT",
+        "busType": "Luxury",
+        "status": "Certified",
+        "departureTime": "06:00",
+        "arrivalTime": "07:13",
+        "departureLocation": "JaEla",
+        "arrivalLocation": "SLIIT",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "createdAt": "2026-02-19T04:45:07.989Z",
+        "updatedAt": "2026-02-25T08:15:21.653Z",
+        "__v": 0,
+        "price": 1670,
+        "availableSeats": 32
+    },
+    {
+        "_id": "6996965fff6ec2efd61cc651",
+        "busImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmU4VIddjD2W_2OR_TmxV4_fkaiD9jlYuj_w&s",
+        "busId": "BUS008",
+        "routeName": "Panadura - SLIIT",
+        "busType": "AC",
+        "status": "Certified",
+        "departureTime": "05:30",
+        "arrivalTime": "07:10",
+        "departureLocation": "Panadura",
+        "arrivalLocation": "SLIIT",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "createdAt": "2026-02-19T04:49:35.127Z",
+        "updatedAt": "2026-02-25T08:15:38.782Z",
+        "__v": 0,
+        "price": 1799.99,
+        "availableSeats": 25
+    },
+    {
+        "_id": "6996cae4336dc7fa1232b0d0",
+        "busImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf6OFn7hoqVay_-32nVe3IgcJEugbDIrpOyA&s",
+        "busId": "BUS009",
+        "routeName": "Negombo - SLIIT",
+        "busType": "AC",
+        "status": "Certified",
+        "departureTime": "05:55",
+        "arrivalTime": "07:02",
+        "departureLocation": "Negombo",
+        "arrivalLocation": "SLIIT",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "createdAt": "2026-02-19T08:33:40.424Z",
+        "updatedAt": "2026-02-25T08:17:36.422Z",
+        "__v": 0,
+        "price": 1230,
+        "availableSeats": 48
+    },
+    {
+        "_id": "699d7dd86960cad007fc6789",
+        "busImageUrl": "https://holidaylankatours.com/x/cdn/?https://storage.googleapis.com/production-sitelio-v1-0-7/187/54187/zAc7Unhz/627fc6d59d864ff2b7158fd9607a5cea",
+        "busId": "BUS010",
+        "routeName": "Pannipitiya - SLIIT",
+        "busType": "Luxury",
+        "status": "Certified",
+        "departureTime": "05:45",
+        "arrivalTime": "07:15",
+        "departureLocation": "Pannipitiya",
+        "arrivalLocation": "SLIIT",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1800,
+        "createdAt": "2026-02-24T10:30:48.591Z",
+        "updatedAt": "2026-02-25T08:16:40.163Z",
+        "__v": 0,
+        "availableSeats": 30
+    },
+    {
+        "_id": "699d8050ced2342fa2ef708c",
+        "busImageUrl": "https://pbs.twimg.com/media/FuiVn5KacAAxJif.jpg",
+        "busId": "BUS011",
+        "routeName": "Bambalapitiya - SLIIT",
+        "busType": "Luxury",
+        "status": "Certified",
+        "departureTime": "05:14",
+        "arrivalTime": "07:14",
+        "departureLocation": "Bambalapitiya",
+        "arrivalLocation": "SLIIT",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1100,
+        "createdAt": "2026-02-24T10:41:20.981Z",
+        "updatedAt": "2026-02-25T08:23:50.934Z",
+        "__v": 0,
+        "availableSeats": 22
+    },
+    {
+        "_id": "699e6a89e1531d63545d58c3",
+        "busImageUrl": "https://pbs.twimg.com/media/FuiVn5KacAAxJif.jpg",
+        "busId": "BUS012",
+        "routeName": "SLIIT - Bambalapitiya",
+        "busType": "Luxury",
+        "status": "Certified",
+        "departureTime": "18:08",
+        "arrivalTime": "19:31",
+        "departureLocation": "SLIIT",
+        "arrivalLocation": "Bambalapitiya",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1100,
+        "createdAt": "2026-02-25T03:20:41.559Z",
+        "updatedAt": "2026-02-25T08:23:38.467Z",
+        "__v": 0,
+        "availableSeats": 18
+    },
+    {
+        "_id": "699eb2907e7473b062ecac44",
+        "busImageUrl": "https://media.istockphoto.com/id/1189925691/photo/setra-s519hd.jpg?s=2048x2048&w=is&k=20&c=jeg-3m9IITiRGAcpLMCikOaGF14oS178F9W_oQqN5n8=",
+        "busId": "BUS013",
+        "routeName": "SLIIT - Borella",
+        "busType": "Normal",
+        "status": "Certified",
+        "departureTime": "18:00",
+        "arrivalTime": "19:21",
+        "departureLocation": "SLIIT",
+        "arrivalLocation": "Borella",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1400,
+        "createdAt": "2026-02-25T08:28:00.479Z",
+        "updatedAt": "2026-02-25T08:28:00.479Z",
+        "__v": 0,
+        "availableSeats": 33
+    },
+    {
+        "_id": "699eb7337e7473b062ecac63",
+        "busImageUrl": "https://assets.volvo.com/is/image/VolvoInformationTechnologyAB/1860x1050-9400-Intercity-coach-BS4-2020-1?wid=1024",
+        "busId": "BUS014",
+        "routeName": "SLIIT - Katunayake",
+        "busType": "Luxury",
+        "status": "Certified",
+        "departureTime": "18:10",
+        "arrivalTime": "19:23",
+        "departureLocation": "SLIIT",
+        "arrivalLocation": "Katunayake",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1500,
+        "createdAt": "2026-02-25T08:47:47.163Z",
+        "updatedAt": "2026-02-25T08:47:47.163Z",
+        "__v": 0,
+        "availableSeats": 27
+    },
+    {
+        "_id": "699eb7b57e7473b062ecac69",
+        "busImageUrl": "https://www.srilankantours.org/uploads/8/4/9/7/8497630/1814891_orig.jpg",
+        "busId": "BUS015",
+        "routeName": "SLIIT - Gampaha",
+        "busType": "Normal",
+        "status": "Certified",
+        "departureTime": "18:00",
+        "arrivalTime": "19:25",
+        "departureLocation": "SLIIT",
+        "arrivalLocation": "Gampaha",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1700,
+        "createdAt": "2026-02-25T08:49:57.534Z",
+        "updatedAt": "2026-02-25T08:49:57.534Z",
+        "__v": 0,
+        "availableSeats": 36
+    },
+    {
+        "_id": "699eb8647e7473b062ecac6f",
+        "busImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0Lyx-0AqgthFnwkbXR74S5xuC9qM_CRcHyQ&s",
+        "busId": "BUS016",
+        "routeName": "SLIIT - Koswatta",
+        "busType": "Non-AC",
+        "status": "Certified",
+        "departureTime": "18:09",
+        "arrivalTime": "19:25",
+        "departureLocation": "SLIIT",
+        "arrivalLocation": "Koswatta",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1450,
+        "createdAt": "2026-02-25T08:52:52.023Z",
+        "updatedAt": "2026-02-25T08:53:30.812Z",
+        "__v": 0,
+        "availableSeats": 41
+    },
+    {
+        "_id": "699eb9337e7473b062ecac87",
+        "busImageUrl": "https://assets.volvo.com/is/image/VolvoInformationTechnologyAB/BS%20VI%20Bus%20Single%20Axcel_Single%20Bus?wid=1024",
+        "busId": "BUS017",
+        "routeName": "SLIIT - JaEla",
+        "busType": "Luxury",
+        "status": "Certified",
+        "departureTime": "18:00",
+        "arrivalTime": "19:23",
+        "departureLocation": "SLIIT",
+        "arrivalLocation": "JaEla",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1670,
+        "createdAt": "2026-02-25T08:56:19.525Z",
+        "updatedAt": "2026-02-25T08:57:07.396Z",
+        "__v": 0,
+        "availableSeats": 29
+    },
+    {
+        "_id": "699eba317e7473b062ecaca3",
+        "busImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmU4VIddjD2W_2OR_TmxV4_fkaiD9jlYuj_w&s",
+        "busId": "BUS018",
+        "routeName": "SLIIT - Panadura",
+        "busType": "AC",
+        "status": "Certified",
+        "departureTime": "17:50",
+        "arrivalTime": "19:30",
+        "departureLocation": "SLIIT",
+        "arrivalLocation": "Panadura",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1799.99,
+        "createdAt": "2026-02-25T09:00:33.989Z",
+        "updatedAt": "2026-02-25T09:00:33.989Z",
+        "__v": 0,
+        "availableSeats": 24
+    },
+    {
+        "_id": "699ebb197e7473b062ecacab",
+        "busImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf6OFn7hoqVay_-32nVe3IgcJEugbDIrpOyA&s",
+        "busId": "BUS019",
+        "routeName": "SLIIT - Negombo",
+        "busType": "AC",
+        "status": "Certified",
+        "departureTime": "19:00",
+        "arrivalTime": "20:23",
+        "departureLocation": "SLIIT",
+        "arrivalLocation": "Negombo",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1230,
+        "createdAt": "2026-02-25T09:04:25.556Z",
+        "updatedAt": "2026-02-25T09:04:25.556Z",
+        "__v": 0,
+        "availableSeats": 37
+    },
+    {
+        "_id": "699ebbc67e7473b062ecacb7",
+        "busImageUrl": "https://holidaylankatours.com/x/cdn/?https://storage.googleapis.com/production-sitelio-v1-0-7/187/54187/zAc7Unhz/627fc6d59d864ff2b7158fd9607a5cea",
+        "busId": "BUS020",
+        "routeName": "SLIIT - Pannipitiya",
+        "busType": "Luxury",
+        "status": "Certified",
+        "departureTime": "18:00",
+        "arrivalTime": "19:13",
+        "departureLocation": "SLIIT",
+        "arrivalLocation": "Pannipitiya",
+        "departureDate": "2026-02-25T00:00:00.000Z",
+        "price": 1800,
+        "createdAt": "2026-02-25T09:07:18.066Z",
+        "updatedAt": "2026-02-25T09:07:18.066Z",
+        "__v": 0,
+        "availableSeats": 31
+    }  
+];
+
+const Journey = () => {
+  const [searchParams] = useSearchParams();
+  const [routes, setRoutes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedBus, setSelectedBus] = useState(null);
+  const [map, setMap] = useState(null);
+  const [polylines, setPolylines] = useState([]);
+  const [hoveredBus, setHoveredBus] = useState(null);
+  const [displayedBuses, setDisplayedBuses] = useState(10);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('routeName'); // 'routeName', 'departure', 'arrival'
+  const cardRefs = useRef({});
+
+  // Get search parameters with dynamic date fallback
+  const from = searchParams.get('from') || '';
+  const to = searchParams.get('to') || '';
+  const date = searchParams.get('date') || new Date().toISOString().split('T')[0]; // Auto current date
+
+  // Fetch routes from API
+  useEffect(() => {
+    const fetchRoutes = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:5000/api/routes');
+        const result = await response.json();
+        
+        // Extract data from API response
+        let data = [];
+        if (result && result.success && result.data && result.data.routes && Array.isArray(result.data.routes)) {
+          data = result.data.routes;
+        } else if (result && result.success && Array.isArray(result.data)) {
+          data = result.data;
+        } else if (result && result.success && Array.isArray(result.routes)) {
+          data = result.routes;
+        } else if (Array.isArray(result)) {
+          data = result;
+        } else {
+          console.error('API response structure:', result);
+          data = [];
+        }
+        
+        setRoutes(data);
+      } catch (error) {
+        console.error('Error fetching routes:', error);
+        // Fallback to mock data if API fails
+        setRoutes(busData);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRoutes();
+  }, []);
+
+  // Filter buses - only apply filters if search parameters exist
+  const filteredBuses = useMemo(() => {
+    if (!Array.isArray(routes)) return [];
+    
+    let filtered = routes;
+
+    // Apply search term filter
+    if (searchTerm) {
+      filtered = filtered.filter(bus => {
+        switch (filterType) {
+          case 'routeName':
+            return bus.routeName.toLowerCase().includes(searchTerm.toLowerCase());
+          case 'departure':
+            return bus.departureLocation.toLowerCase().includes(searchTerm.toLowerCase());
+          case 'arrival':
+            return bus.arrivalLocation.toLowerCase().includes(searchTerm.toLowerCase());
+          default:
+            return bus.routeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                   bus.departureLocation.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                   bus.arrivalLocation.toLowerCase().includes(searchTerm.toLowerCase());
+        }
+      });
+    }
+
+    // If no search parameters, show all buses
+    if (!from && !to && !date && !searchTerm) {
+      return filtered;
+    }
+    
+    // Filter by departure location
+    if (from) {
+      filtered = filtered.filter(bus => 
+        bus.departureLocation.toLowerCase() === from.toLowerCase()
+      );
+    }
+
+    // Filter by arrival location
+    if (to) {
+      filtered = filtered.filter(bus => 
+        bus.arrivalLocation.toLowerCase() === to.toLowerCase()
+      );
+    }
+
+    // Filter by date - convert both to YYYY-MM-DD format for comparison
+    if (date) {
+      filtered = filtered.filter(bus => {
+        const busDate = new Date(bus.departureDate).toISOString().split('T')[0];
+        return busDate === date;
+      });
+    }
+
+    return filtered;
+  }, [routes, from, to, date, searchTerm, filterType]);
+
+  // Map polylines effect
+  useEffect(() => {
+    if (map && filteredBuses.length > 0) {
+      // Clear existing polylines
+      polylines.forEach(polyline => {
+        map.removeLayer(polyline);
+      });
+      
+      const newPolylines = [];
+      
+      // Draw polylines for filtered buses
+      filteredBuses.forEach(bus => {
+        const departureCoords = coordinates[bus.departureLocation];
+        const arrivalCoords = coordinates[bus.arrivalLocation];
+        
+        if (departureCoords && arrivalCoords) {
+          const routeCoordinates = [departureCoords, arrivalCoords];
+          
+          // Use red for selected/hovered bus, blue for others
+          const isSelected = selectedBus && selectedBus._id === bus._id;
+          const isHovered = hoveredBus && hoveredBus._id === bus._id;
+          
+          const polyline = L.polyline(routeCoordinates, {
+            color: isSelected ? "red" : isHovered ? "orange" : "blue",
+            weight: isSelected ? 6 : isHovered ? 5 : 3,
+            opacity: isSelected ? 1 : isHovered ? 0.9 : 0.6
+          }).addTo(map);
+          
+          newPolylines.push(polyline);
+        }
+      });
+      
+      setPolylines(newPolylines);
+      
+      // Fit map to show all routes
+      if (newPolylines.length > 0) {
+        const group = new L.featureGroup(newPolylines);
+        map.fitBounds(group.getBounds().pad(0.1));
+      }
+    }
+  }, [map, filteredBuses]);
+
+  // Cleanup polylines on unmount
+  useEffect(() => {
+    return () => {
+      if (map) {
+        polylines.forEach(polyline => {
+          map.removeLayer(polyline);
+        });
+      }
+    };
+  }, [map, polylines]);
+
+  // Get unique locations for dropdowns
+  const uniqueDepartureLocations = useMemo(() => {
+    if (!Array.isArray(routes)) return [];
+    return [...new Set(routes.map(bus => bus.departureLocation))].sort();
+  }, [routes]);
+
+  const uniqueArrivalLocations = useMemo(() => {
+    if (!Array.isArray(routes)) return [];
+    return [...new Set(routes.map(bus => bus.arrivalLocation))].sort();
+  }, [routes]);
+
+  // Format time
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(':');
+    const hour = parseInt(hours);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+    return `${displayHour}:${minutes} ${ampm}`;
+  };
+
+  // Format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      weekday: 'short', 
+      month: 'short', 
+      day: 'numeric' 
+    });
+  };
+
+  // Format price
+  const formatPrice = (price) => {
+    return `LKR ${price.toLocaleString()}`;
+  };
+
+  // Get bus type color
+  const getBusTypeColor = (type) => {
+    const colors = {
+      'AC': 'bg-blue-100 text-blue-800',
+      'Luxury': 'bg-purple-100 text-purple-800',
+      'Non-AC': 'bg-orange-100 text-orange-800'
+    };
+    return colors[type] || 'bg-gray-100 text-gray-800';
+  };
+
+  // Get status color
+  const getStatusColor = (status) => {
+    const colors = {
+      'Certified': 'bg-green-100 text-green-800',
+      'Pending': 'bg-yellow-100 text-yellow-800'
+    };
+    return colors[status] || 'bg-gray-100 text-gray-800';
+  };
+
+  // Get available seats color
+  const getSeatsColor = (seats) => {
+    if (seats <= 5) return 'bg-red-100 text-red-800';
+    if (seats <= 15) return 'bg-yellow-100 text-yellow-800';
+    return 'bg-green-100 text-green-800';
+  };
+
+// Format price
+const formatPrice = (price) => {
+return `LKR ${price.toLocaleString()}`;
+};
+
+// Get bus type color
+const getBusTypeColor = (type) => {
+const colors = {
+  'AC': 'bg-blue-100 text-blue-800',
+  'Luxury': 'bg-purple-100 text-purple-800',
+  'Non-AC': 'bg-orange-100 text-orange-800'
+};
+return colors[type] || 'bg-gray-100 text-gray-800';
+};
+
+// Get status color
+const getStatusColor = (status) => {
+const colors = {
+  'Certified': 'bg-green-100 text-green-800',
+  'Pending': 'bg-yellow-100 text-yellow-800'
+};
+return colors[status] || 'bg-gray-100 text-gray-800';
+};
+
+// Get available seats color
+const getSeatsColor = (seats) => {
+if (seats <= 5) return 'bg-red-100 text-red-800';
+if (seats <= 15) return 'bg-yellow-100 text-yellow-800';
+return 'bg-green-100 text-green-800';
+};
+
+// Handle search input change
+const handleSearchChange = (e) => {
+setSearchTerm(e.target.value);
+};
+
+// Handle filter type change
+const handleFilterTypeChange = (e) => {
+setFilterType(e.target.value);
+};
+
+// Handle bus card click
+const handleCardClick = (bus) => {
+setSelectedBus(bus);
+// Scroll to card if needed
+if (cardRefs.current[bus._id]) {
+  cardRefs.current[bus._id].scrollIntoView({ 
+    behavior: 'smooth', 
+    block: 'center' 
+  });
+}
+};
+
+// Handle bus card hover
+const handleCardHover = (bus) => {
+setHoveredBus(bus);
+};
+    }
+  };
+
+  // Handle map marker click
+  const handleMarkerClick = (bus) => {
+    setSelectedBus(bus);
+    handleCardClick(bus);
+  };
+
+  return (
+    <>
+    <div className="min-h-screen bg-gray-50 pt-20">
+      <div className="flex flex-col lg:flex-row">
+        {/* Left Side: Bus Cards */}
+        <div className="flex-1 lg:w-2/3 p-4">
+          {/* Search Box */}
+          <SearchBox variant="journey" />
+          
+          {/* Enhanced Search Controls */}
+          <div className="bg-white rounded-xl shadow-md p-4 mb-6 mt-8">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  placeholder="Search by route name, departure, or arrival..."
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Filter By</label>
+                <select
+                  value={filterType}
+                  onChange={handleFilterTypeChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="routeName">Route Name</option>
+                  <option value="departure">Departure Location</option>
+                  <option value="arrival">Arrival Location</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Search Results Summary */}
+          {(from || to || date) && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white rounded-xl shadow-md p-4 mb-6 mt-8"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-semibold text-gray-800">
+                    {filteredBuses.length} {filteredBuses.length === 1 ? 'bus' : 'buses'} found
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {from && `From: ${from}`} {to && `→ To: ${to}`} {date && `on ${new Date(date).toLocaleDateString()}`}
+                  </p>
+                </div>
+                <a
+                  href="/"
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                >
+                  Clear Search
+                </a>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Bus Cards Grid */}
+          <div className="mt-16 md:mt-20">
+          {loading ? (
+            <div className="col-span-full text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading available routes...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {filteredBuses.slice(0, displayedBuses).map((bus, index) => (
+              <motion.div
+                key={bus._id}
+                ref={(el) => cardRefs.current[bus._id] = el}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: "0 10px 25px rgba(0,0,0,0.1)" 
+                }}
+                onClick={() => handleCardClick(bus)}
+                onMouseEnter={() => handleCardHover(bus)}
+                onMouseLeave={handleCardLeave}
+                className={`bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer ${
+                  selectedBus && selectedBus._id === bus._id ? 'ring-2 ring-blue-500' : ''
+                }`}
+              >
+                {/* Bus Image */}
+                <div className="relative">
+                  <img 
+                    src={bus.busImageUrl} 
+                    alt={bus.routeName}
+                    className="w-full h-40 object-cover"
+                    onError={(e) => {
+                      e.target.src = 'https://picsum.photos/400/200?random=' + bus._id;
+                    }}
+                  />
+                  {/* Available Seats Badge */}
+                  <div className="absolute top-2 right-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getSeatsColor(bus.availableSeats)}`}>
+                      {bus.availableSeats} seats
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Card Content */}
+                <div className="p-4">
+                  {/* Bus ID and Route Name */}
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <h3 className="font-bold text-lg text-gray-900">{bus.busId}</h3>
+                      <p className="text-sm text-gray-600">{bus.routeName}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xl font-bold text-blue-600">{formatPrice(bus.price)}</p>
+                    </div>
+                  </div>
+
+                  {/* Bus Type and Status */}
+                  <div className="flex gap-2 mb-3">
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getBusTypeColor(bus.busType)}`}>
+                      {bus.busType}
+                    </span>
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(bus.status)}`}>
+                      {bus.status}
+                    </span>
+                  </div>
+
+                  {/* Amenities */}
+                  <div className="flex gap-3 mb-3 text-gray-600">
+                    {bus.busType === 'Luxury' && (
+                      <>
+                        <FaWifi className="text-sm" title="WiFi Available" />
+                        <FaTv className="text-sm" title="Entertainment" />
+                      </>
+                    )}
+                    {bus.busType === 'AC' && <FaWifi className="text-sm" title="WiFi Available" />}
+                  </div>
+
+                  {/* Departure Date */}
+                  <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
+                    <FaCalendarAlt className="text-blue-500" />
+                    <span>{formatDate(bus.departureDate)}</span>
+                  </div>
+
+                  {/* Departure & Arrival Details */}
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <FaClock className="text-blue-500" />
+                      <span>{formatTime(bus.departureTime)} - {formatTime(bus.arrivalTime)}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <FaMapMarkerAlt className="text-blue-500" />
+                      <span>{bus.departureLocation}</span>
+                      <FaArrowRight className="text-gray-400" />
+                      <span>{bus.arrivalLocation}</span>
+                    </div>
+                  </div>
+
+                  {/* Available Seats with Icon */}
+                  <div className="flex items-center gap-2 mt-3 text-sm text-gray-600">
+                    <FaUsers className="text-blue-500" />
+                    <span>{bus.availableSeats} seats available</span>
+                  </div>
+
+                  {/* Book Button */}
+                  <button className="w-full mt-3 bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center gap-2">
+                    <FaUsers className="text-sm" />
+                    Book Now
+                  </button>
+
+                  {/* Rating */}
+                  <div className="flex items-center justify-center mt-2 text-xs text-gray-500">
+                    <FaStar className="text-yellow-400 mr-1" />
+                    <span>4.5 (124 reviews)</span>
+                  </div>
+
+                  {/* Hover Details */}
+                  {hoveredBus === bus._id && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white text-xs"
+                    >
+                      <p>Click to view on map</p>
+                    </motion.div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+
+            {/* No Results */}
+            {filteredBuses.length === 0 && (from || to || date) && (
+              <div className="col-span-full text-center py-12 mt-16 md:mt-20">
+                <FaSearch className="text-6xl text-gray-300 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-600 mb-2">No buses available for selected date</h3>
+                <p className="text-gray-500 mb-4">
+                  No buses found for this route on {date ? new Date(date).toLocaleDateString() : 'the selected date'}
+                </p>
+                <a
+                  href="/"
+                  className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Back to Search
+                </a>
+              </div>
+            )}
+
+            {/* No Search Parameters */}
+            {!from && !to && !date && (
+              <div className="col-span-full text-center py-12 mt-16 md:mt-20">
+                <FaSearch className="text-6xl text-gray-300 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-600 mb-2">Search for buses</h3>
+                <p className="text-gray-500 mb-4">
+                  Use the search box above to find available routes
+                </p>
+              </div>
+            )}
+
+            {/* Results Summary */}
+            {filteredBuses.length > 0 && (
+              <div className="col-span-full mt-6 text-center">
+                <p className="text-sm text-gray-600">
+                  Showing <span className="font-semibold text-blue-600">{filteredBuses.length}</span> buses
+                  {filteredBuses.length > 20 && ` (showing first 20)`}
+                </p>
+              </div>
+            )}
+            </div>
+          )}
+            </div>
+            
+            {/* Load More Button */}
+            {displayedBuses < filteredBuses.length && (
+              <div className="text-center mt-8">
+                <button
+                  onClick={loadMore}
+                  className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2 mx-auto"
+                >
+                  Load More ({filteredBuses.length - displayedBuses} remaining)
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Side: Map (Desktop Only) */}
+        <div className="hidden lg:block lg:w-1/3 p-4">
+          <div className="bg-white rounded-xl shadow-md overflow-hidden h-[calc(100vh-8rem)] sticky top-20">
+            <MapContainer
+              center={[6.9271, 79.8612]}
+              zoom={8}
+              style={{ height: '100%', width: '100%', minHeight: '400px' }}
+              aria-label="Bus routes map"
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              
+              {/* Map markers for each bus route */}
+              {filteredBuses.slice(0, 20).map((bus) => {
+                const departureCoords = coordinates[bus.departureLocation];
+                const arrivalCoords = coordinates[bus.arrivalLocation];
+                
+                return (
+                  <div key={bus._id}>
+                    {departureCoords && (
+                      <Marker 
+                        position={departureCoords}
+                        eventHandlers={{
+                          click: () => handleMarkerClick(bus)
+                        }}
+                      >
+                        <Popup>
+                          <div className="text-sm">
+                            <strong>{bus.busId}</strong><br />
+                            {bus.routeName}<br />
+                            <strong>Departure:</strong> {formatTime(bus.departureTime)}<br />
+                            {bus.departureLocation}<br />
+                            <strong>Seats:</strong> {bus.availableSeats}
+                          </div>
+                        </Popup>
+                      </Marker>
+                    )}
+                    {arrivalCoords && (
+                      <Marker 
+                        position={arrivalCoords}
+                        eventHandlers={{
+                          click: () => handleMarkerClick(bus)
+                        }}
+                      >
+                        <Popup>
+                          <div className="text-sm">
+                            <strong>{bus.busId}</strong><br />
+                            {bus.routeName}<br />
+                            <strong>Arrival:</strong> {formatTime(bus.arrivalTime)}<br />
+                            {bus.arrivalLocation}<br />
+                            <strong>Seats:</strong> {bus.availableSeats}
+                          </div>
+                        </Popup>
+                      </Marker>
+                    )}
+                  </div>
+                );
+              })}
+            </MapContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Map (Below Cards) */}
+      <div className="lg:hidden p-4">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden h-96">
+          <MapContainer
+            center={[6.9271, 79.8612]}
+            zoom={8}
+            style={{ height: '100%', width: '100%', minHeight: '300px' }}
+            aria-label="Bus routes map"
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            
+            {/* Map markers for each bus route */}
+            {filteredBuses.slice(0, displayedBuses).map((bus) => {
+              const departureCoords = coordinates[bus.departureLocation];
+              const arrivalCoords = coordinates[bus.arrivalLocation];
+              
+              return (
+                <div key={bus._id}>
+                  {departureCoords && (
+                    <Marker 
+                      position={departureCoords}
+                      eventHandlers={{
+                        click: () => handleMarkerClick(bus)
+                      }}
+                    >
+                      <Popup>
+                        <div className="text-sm">
+                          <strong>{bus.busId}</strong><br />
+                          {bus.routeName}<br />
+                          <strong>Departure:</strong> {formatTime(bus.departureTime)}<br />
+                          {bus.departureLocation}<br />
+                          <strong>Seats:</strong> {bus.availableSeats}
+                        </div>
+                      </Popup>
+                    </Marker>
+                  )}
+                  {arrivalCoords && (
+                    <Marker 
+                      position={arrivalCoords}
+                      eventHandlers={{
+                        click: () => handleMarkerClick(bus)
+                      }}
+                    >
+                      <Popup>
+                        <div className="text-sm">
+                          <strong>{bus.busId}</strong><br />
+                          {bus.routeName}<br />
+                          <strong>Arrival:</strong> {formatTime(bus.arrivalTime)}<br />
+                          {bus.arrivalLocation}<br />
+                          <strong>Seats:</strong> {bus.availableSeats}
+                        </div>
+                      </Popup>
+                    </Marker>
+                  )}
+                </div>
+              );
+            })}
+          </MapContainer>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Journey;

@@ -1,0 +1,478 @@
+/* ============================================================
+   DriverProfile.css - Modern, Seamless Driver Portal
+   ============================================================ */
+
+/* ── Container Layout ── */
+.dp-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  color: #1e293b;
+}
+
+/* ── Standardized Sidebar ── */
+.dp-sidebar {
+  width: 260px;
+  background: #0f172a;
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.dp-sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.dp-sidebar__logo-icon {
+  background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+  padding: 8px;
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.dp-sidebar__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dp-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  text-align: left;
+}
+
+.dp-sidebar__link:hover {
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.dp-sidebar__link--active {
+  background: #1e293b;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.dp-sidebar__icon {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.dp-sidebar__link--active .dp-sidebar__icon {
+  opacity: 1;
+}
+
+.dp-sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 12px;
+  margin-top: 24px;
+}
+
+.dp-sidebar__avatar {
+  width: 36px;
+  height: 36px;
+  background: #3b82f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+}
+
+.dp-sidebar__user-name { font-size: 13px; font-weight: 700; margin: 0; color: #fff;}
+.dp-sidebar__user-role { font-size: 11px; color: #94a3b8; margin: 0; }
+
+.dp-sidebar__logout {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #334155;
+  color: #f1f5f9;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: 0.2s;
+}
+.dp-sidebar__logout:hover {
+  background: #334155;
+}
+
+/* ── Main Content Area ── */
+.dp-main {
+  flex: 1;
+  padding: 32px 48px;
+  overflow-y: auto;
+}
+
+/* Header */
+.dp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dp-header__title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.dp-header__sub {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.dp-shift {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dp-shift__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  background: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.dp-shift__dot {
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.dp-shift__btn {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dp-shift__btn--out {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.dp-shift__btn--out:hover {
+  background: #fecaca;
+}
+
+/* ── Content Grid ── */
+.dp-content-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.dp-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
+}
+
+.dp-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Driver Profile Summary (Left column) ── */
+.dp-profile-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.dp-profile-summary__avatar {
+  width: 80px;
+  height: 80px;
+  background: #eff6ff;
+  border: 2px solid #3b82f6;
+  color: #3b82f6;
+  border-radius: 50%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.dp-profile-summary__name {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+}
+
+.dp-profile-summary__status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #dcfce7;
+  color: #166534;
+  margin-bottom: 24px;
+}
+.dp-profile-summary__status.onleave { background: #ffe4e6; color: #be123c; }
+.dp-profile-summary__status.suspended { background: #fef3c7; color: #b45309; }
+
+.dp-info-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dp-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 13px;
+}
+
+.dp-info-label { color: #64748b; font-weight: 500; }
+.dp-info-val { color: #0f172a; font-weight: 600; }
+
+/* ── Route Assignment Card ── */
+.dp-route-card {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: #fff;
+  border: none;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.4);
+}
+
+.dp-route-card .dp-card-title { color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;}
+.dp-route__name { font-size: 24px; font-weight: 800; margin: 0 0 4px 0; color: #f8fafc; }
+.dp-route__dest { font-size: 14px; color: #94a3b8; margin: 0 0 20px 0; }
+
+.dp-route__details {
+  display: flex;
+  gap: 24px;
+  background: rgba(255,255,255,0.05);
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.dp-route__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dp-route__stat-label { font-size: 11px; color: #94a3b8; font-weight: 600; }
+.dp-route__stat-val { font-size: 14px; color: #fff; font-weight: 700; }
+
+/* ── Leave Requests Tab ── */
+.dp-leave-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+}
+
+.dp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dp-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dp-form-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.dp-form-input, .dp-form-select, .dp-form-textarea {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #0f172a;
+  background: #f8fafc;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.dp-form-input:focus, .dp-form-select:focus, .dp-form-textarea:focus {
+  border-color: #3b82f6;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.dp-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+  border: none;
+}
+
+.dp-btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.dp-btn-primary:hover { background: #2563eb; }
+
+/* Leave Table */
+.dp-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dp-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+  text-transform: uppercase;
+}
+
+.dp-table td {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #1e293b;
+  font-weight: 500;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Badges */
+.dp-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.dp-badge-pending { background: #fef08a; color: #854d0e; }
+.dp-badge-approved { background: #dcfce7; color: #166534; }
+.dp-badge-rejected { background: #fee2e2; color: #991b1b; }
+
+/* ── Pre-Trip Inspection Form ── */
+.dp-inspect-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.dp-condition-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.dp-condition-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.dp-toggle-group {
+  display: flex;
+  background: #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+  padding: 2px;
+}
+
+.dp-toggle-btn {
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: #64748b;
+  border-radius: 4px;
+}
+
+.dp-toggle-btn.active.good { background: #10b981; color: white; }
+.dp-toggle-btn.active.issue { background: #ef4444; color: white; }
+
+.dp-inspect-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.dp-btn-success { background: #10b981; color: white; flex: 1; }
+.dp-btn-danger { background: #ef4444; color: white; flex: 1; }

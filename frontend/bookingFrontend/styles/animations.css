@@ -1,0 +1,877 @@
+/* ==========================================
+   HERO SECTION ANIMATIONS
+   ========================================== */
+
+@keyframes heroZoom {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, 0, 0) scale(1.015);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpFast {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes overlaySlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-background {
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: center center;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.hero-background-ready {
+  animation: heroZoom 18s linear infinite;
+}
+
+.hero-text {
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.hero-subtitle {
+  animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+/* ==========================================
+   PAGE ENTER ANIMATIONS (CSS ONLY)
+   ========================================== */
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.997);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sectionAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes titleAppear {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+    letter-spacing: 0.02em;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: normal;
+  }
+}
+
+@keyframes authCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.page-enter {
+  animation: pageEnter 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.section-appear {
+  animation: sectionAppear 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.title-appear {
+  animation: titleAppear 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.auth-card-appear {
+  animation: authCardEnter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.anim-delay-1 {
+  animation-delay: 70ms;
+}
+
+.anim-delay-2 {
+  animation-delay: 130ms;
+}
+
+.anim-delay-3 {
+  animation-delay: 190ms;
+}
+
+.anim-delay-4 {
+  animation-delay: 240ms;
+}
+
+@keyframes footerFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.footer-animate {
+  opacity: 0;
+  transform: translateY(14px);
+  transition-property: opacity, transform;
+  transition-duration: 520ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.footer-visible .footer-animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.footer-delay-1,
+.footer-delay-2,
+.footer-delay-3,
+.footer-delay-4,
+.footer-delay-5,
+.footer-delay-6,
+.footer-delay-7,
+.footer-delay-8 {
+  transition-delay: 0ms;
+}
+
+.footer-delay-1 {
+  transition-delay: 80ms;
+}
+
+.footer-delay-2 {
+  transition-delay: 140ms;
+}
+
+.footer-delay-3 {
+  transition-delay: 200ms;
+}
+
+.footer-delay-4 {
+  transition-delay: 260ms;
+}
+
+.footer-delay-5 {
+  transition-delay: 320ms;
+}
+
+.footer-delay-6 {
+  transition-delay: 380ms;
+}
+
+.footer-delay-7 {
+  transition-delay: 440ms;
+}
+
+.footer-delay-8 {
+  transition-delay: 500ms;
+}
+
+.footer-delay-9 {
+  transition-delay: 560ms;
+}
+
+.footer-delay-10 {
+  transition-delay: 620ms;
+}
+
+.footer-delay-11 {
+  transition-delay: 680ms;
+}
+
+.footer-delay-12 {
+  transition-delay: 740ms;
+}
+
+.footer-delay-13 {
+  transition-delay: 800ms;
+}
+
+.footer-delay-14 {
+  transition-delay: 860ms;
+}
+
+.footer-delay-15 {
+  transition-delay: 920ms;
+}
+
+.footer-delay-16 {
+  transition-delay: 980ms;
+}
+
+.footer-social {
+  transition: transform 200ms ease, background-color 200ms ease, box-shadow 200ms ease;
+}
+
+.footer-social:hover {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.24);
+}
+
+.footer-feature {
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition-property: opacity, transform;
+  transition-duration: 620ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footer-visible .footer-feature {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.footer-feature:hover {
+  transform: translateY(-3px) scale(1.01);
+}
+
+@keyframes bookingRevealIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.booking-scroll-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition-property: opacity, transform;
+  transition-duration: 540ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.booking-scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.booking-delay-1,
+.booking-delay-2,
+.booking-delay-3,
+.booking-delay-4,
+.booking-delay-5,
+.booking-delay-6,
+.booking-delay-7,
+.booking-delay-8 {
+  transition-delay: 0ms;
+}
+
+.booking-delay-1 {
+  transition-delay: 60ms;
+}
+
+.booking-delay-2 {
+  transition-delay: 120ms;
+}
+
+.booking-delay-3 {
+  transition-delay: 180ms;
+}
+
+.booking-delay-4 {
+  transition-delay: 240ms;
+}
+
+.booking-delay-5 {
+  transition-delay: 300ms;
+}
+
+.booking-delay-6 {
+  transition-delay: 360ms;
+}
+
+.booking-delay-7 {
+  transition-delay: 420ms;
+}
+
+.booking-delay-8 {
+  transition-delay: 480ms;
+}
+
+/* ==========================================
+   CARD ANIMATIONS
+   ========================================== */
+
+@keyframes cardSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-animate {
+  animation: cardSlideUp 0.6s ease-out both;
+}
+
+.card-animate:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.card-animate:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.card-animate:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.card-hover-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Overlay section animation */
+.overlay-section {
+  animation: overlaySlideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.overlay-section.visible {
+  animation: overlaySlideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ==========================================
+   BUTTON ANIMATIONS
+   ========================================== */
+
+@keyframes buttonScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes buttonPress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.button-animate {
+  position: relative;
+  transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+  overflow: hidden;
+}
+
+.button-animate::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.button-animate:hover {
+  animation: buttonScale 0.3s ease-out;
+  filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.5));
+  transform: scale(1.05);
+}
+
+.button-animate:active {
+  animation: buttonPress 0.2s ease-in-out;
+}
+
+.button-animate:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-animate,
+  .button-animate,
+  .page-enter,
+  .section-appear,
+  .title-appear,
+  .auth-card-appear,
+  .footer-animate,
+  .footer-social,
+  .booking-scroll-reveal {
+    animation: none;
+    transition: none;
+  }
+
+  .footer-animate {
+    opacity: 1;
+    transform: none;
+  }
+
+  .booking-scroll-reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .footer-feature {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================
+   SEAT SELECTION ANIMATIONS
+   ========================================== */
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes seatPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.sheet-open {
+  animation: slideInRight 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sheet-close {
+  animation: slideOutRight 0.3s ease-in;
+}
+
+.seat-button {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+}
+
+.seat-button:active {
+  animation: seatPop 0.4s ease-out;
+}
+
+.seat-color-transition {
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+/* ==========================================
+   SIDEBAR ANIMATIONS
+   ========================================== */
+
+@keyframes sidebarSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseUpdate {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+.sidebar-animate {
+  animation: sidebarSlideIn 0.5s ease-out;
+}
+
+.sidebar-update-pulse {
+  animation: pulseUpdate 0.6s ease-out;
+}
+
+/* ==========================================
+   MICRO INTERACTIONS
+   ========================================== */
+
+@keyframes focusGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+}
+
+@keyframes iconBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes iconPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.input-focus-glow {
+  transition: all 0.2s ease-in-out;
+  border-color: #3b82f6;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+.input-base {
+  transition: all 0.3s ease-in-out;
+}
+
+.input-base:focus {
+  animation: focusGlow 0.6s ease-out;
+}
+
+.icon-hover {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+/* ==========================================
+   MODERN PAGE AMBIENT MOTION
+   ========================================== */
+
+@keyframes ambientDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8px, -10px, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(-6px, 8px, 0) scale(1);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeInSoft {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ambient-blob {
+  animation: ambientDrift 12s ease-in-out infinite;
+}
+
+.gradient-flow {
+  background-size: 160% 160%;
+  animation: gradientShift 14s ease infinite;
+}
+
+.section-reveal {
+  animation: fadeInSoft 0.7s ease-out both;
+}
+
+.stagger-in > * {
+  animation: fadeInSoft 0.55s ease-out both;
+}
+
+.stagger-in > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.stagger-in > *:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.stagger-in > *:nth-child(3) {
+  animation-delay: 0.25s;
+}
+
+.stagger-in > *:nth-child(4) {
+  animation-delay: 0.35s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-background,
+  .hero-text,
+  .hero-subtitle,
+  .card-animate,
+  .ambient-blob,
+  .gradient-flow,
+  .section-reveal,
+  .stagger-in > * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================
+   BOOKING PAGE MODERN MOTION
+   ========================================== */
+
+@keyframes bookingReveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.booking-reveal {
+  animation: bookingReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.booking-surface {
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.booking-surface:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(37, 99, 235, 0.16);
+  border-color: rgba(59, 130, 246, 0.42);
+}
+
+.booking-button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.booking-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.24);
+  filter: saturate(1.04);
+}
+
+.booking-button:active {
+  transform: translateY(0);
+}
+
+.passenger-field {
+  animation: bookingReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.passenger-field:nth-child(1) {
+  animation-delay: 0.04s;
+}
+
+.passenger-field:nth-child(2) {
+  animation-delay: 0.09s;
+}
+
+.passenger-field:nth-child(3) {
+  animation-delay: 0.14s;
+}
+
+.passenger-field:nth-child(4) {
+  animation-delay: 0.19s;
+}
+
+.modern-input-wrap {
+  transition: transform 0.22s ease;
+}
+
+.modern-input {
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+}
+
+.modern-input-wrap:focus-within {
+  transform: translateY(-1px);
+}
+
+.modern-input-wrap:focus-within .modern-icon {
+  color: rgba(37, 99, 235, 0.95);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.modern-icon {
+  transition: color 0.22s ease, transform 0.22s ease;
+}
+
+.modern-input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12), 0 10px 22px rgba(37, 99, 235, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .booking-reveal,
+  .booking-surface,
+  .booking-button,
+  .passenger-field,
+  .modern-input,
+  .modern-input-wrap,
+  .modern-icon {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.icon-hover:hover {
+  animation: iconBounce 0.4s ease-out;
+  transform: scale(1.15);
+}
+
+.icon-pulse {
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+/* ==========================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================== */
+
+@media (max-width: 768px) {
+  .hero-background-ready {
+    animation: heroZoom 22s linear infinite;
+  }
+
+  .hero-text {
+    font-size: 1.5rem;
+  }
+
+  .card-hover-lift {
+    transform: translateY(-3px);
+  }
+}
+
+/* ==========================================
+   UTILITY ANIMATIONS
+   ========================================== */
+
+.fade-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.fade-in-delay-1 {
+  animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+
+.fade-in-delay-2 {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.fade-in-delay-3 {
+  animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.smooth-transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.3s;
+}

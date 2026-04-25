@@ -1,0 +1,24 @@
+{
+  "name": "student-transport-system",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "install:backend": "npm --prefix backend/bookingBackend install",
+    "install:booking": "npm --prefix frontend/bookingFrontend install",
+    "install:route": "npm --prefix frontend/routeManagementFrontend install",
+    "install:payment": "npm --prefix frontend/paymentFrontend install",
+    "install:all": "npm run install:backend && npm run install:booking && npm run install:route && npm run install:payment",
+    "start:backend": "npm --prefix backend/bookingBackend start",
+    "start:driver-maintenance-backend": "npm --prefix backend/driverMaintenanceBackend start",
+    "start:route": "cross-env PORT=3000 npm --prefix frontend/routeManagementFrontend start",
+    "start:booking": "cross-env PORT=3001 npm --prefix frontend/bookingFrontend start",
+    "start:payment": "cross-env PORT=3002 DANGEROUSLY_DISABLE_HOST_CHECK=true BROWSER=none npm --prefix frontend/paymentFrontend start",
+    "start:driver-maintenance-frontend": "cross-env PORT=3004 npm --prefix frontend/driverMaintenanceFrontend run dev",
+    "start:all": "concurrently -k -n BACKEND,DRIVER_MAINTENANCE_BACKEND,ROUTE,BOOKING,PAYMENT,DRIVER_MAINTENANCE_FRONTEND -c blue,red,magenta,green,cyan,yellow \"npm run start:backend\" \"npm run start:driver-maintenance-backend\" \"npm run start:route\" \"npm run start:booking\" \"npm run start:payment\" \"npm run start:driver-maintenance-frontend\"",
+    "dev": "npm run start:all"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3"
+  }
+}
